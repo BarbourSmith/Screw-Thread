@@ -7,7 +7,7 @@
     "ioValues": [
         {
             "name": "Diameter",
-            "ioValue": 10
+            "ioValue": 20
         },
         {
             "name": "Pitch",
@@ -15,7 +15,7 @@
         },
         {
             "name": "Height",
-            "ioValue": 10
+            "ioValue": 4
         }
     ],
     "topLevel": true,
@@ -29,30 +29,34 @@
             "ioValues": []
         },
         {
+            "atomType": "Code",
+            "name": "Code",
+            "x": 0.32341269841269843,
+            "y": 0.40384615384615385,
+            "uniqueID": 133728,
+            "ioValues": [
+                {
+                    "name": "dia",
+                    "ioValue": 20
+                },
+                {
+                    "name": "pit",
+                    "ioValue": 10
+                },
+                {
+                    "name": "height",
+                    "ioValue": 4
+                }
+            ],
+            "code": "//Ported to from https://github.com/jsxcad/JSxCAD/blob/92f4cc9dcbb74f4cfbd85d41959a3fda06db7a5c/nb/projects/bolt/bolt.md\n\nfunction main(dia, height, pit){\n  return ScrewThread(dia, height);\n}\n\nconst Profile = (pitch = 1, angle = 60 / 360) => {\n  return Path(\n    Point(0, 1 / -2),\n    Point(pitch / -2, 1 / 2),\n    Point(pitch / 2, 1 / 2),\n    Point(0, 1 / -2)\n  ).fill();\n}\n\nconst ScrewThread = ( diameter, height, { pitch = 1, angle, play = 0.1, lefthanded = false } = {}) => {\n\nreturn Profile(pitch, angle)\n    .y(diameter / -2 + 1 / 2 + play * 2)\n    .ry(1 / 4)\n    .loft(\n      seq(\n        (t) => (s) => {\n          console.log('S is: ');\n          console.log(s);\n          return s.rz(t).z(pitch * t * 1.001);\n        },\n        {\n          from: -1 / 2,\n          by: 1 / 32,\n          to: 3 / 2,\n        }\n      )\n    )\n    .scale(lefthanded ? 1 : -1, lefthanded ? 1 : -1, 1)\n    .clip(Box(diameter).ex(pitch))\n    .z(seq((a) => a, { from: 0, to: height, by: pitch }))\n    .clip(Box(diameter).ex(height))\n    .and(Arc(diameter - 2).ex(height));\n}\n\n\n\nreturn main(dia, height, pit)"
+        },
+        {
             "atomType": "Input",
             "name": "Pitch",
             "x": 0.013333333333333334,
             "y": 0.532051282051282,
             "uniqueID": 228960,
             "ioValues": []
-        },
-        {
-            "atomType": "Code",
-            "name": "Code",
-            "x": 0.3505291005291006,
-            "y": 0.45833333333333337,
-            "uniqueID": 133728,
-            "ioValues": [
-                {
-                    "name": "profile",
-                    "ioValue": 10
-                },
-                {
-                    "name": "teeth",
-                    "ioValue": 10
-                }
-            ],
-            "code": "//Ported to from https://github.com/jsxcad/JSxCAD/blob/92f4cc9dcbb74f4cfbd85d41959a3fda06db7a5c/nb/projects/bolt/bolt.md\n\n//const makePulley = (profile, teeth) => {\n  // Number of teeth, standard Mendel T5 belt = 8, gives Outside Diameter of 11.88mm\n\n\nconst Profile = (pitch = 1, angle = 60 / 360) => {\n  return Path(\n    Point(0, 1 / -2),\n    Point(pitch / -2, 1 / 2),\n    Point(pitch / 2, 1 / 2),\n    Point(0, 1 / -2)\n  ).fill();\n}\n\nconst ScrewThread = ( diameter, height, { pitch = 1, angle, play = 0.1, lefthanded = false } = {}) => {\n\nreturn Profile(pitch, angle).y(diameter / -2 + 1 / 2 + play * 2).ry(1 / 4).loft(seq((t) => {(s) => {s.rz(t).z(pitch * t * 1.001), {from: -1 / 2, by: 1 / 32, to: 3 / 2}}}))\n    //.scale(lefthanded ? 1 : -1, lefthanded ? 1 : -1, 1)\n    //.clip(Box(diameter).ex(pitch))\n    //.z(seq((a) => a, { from: 0, to: height, by: pitch }))\n    //.clip(Box(diameter).ex(height))\n    //.and(Arc(diameter - 2).ex(height));\n}\n\nfunction main(profile, teeth){\n  return ScrewThread(10,10);\n}\n\nreturn main(profile, teeth)"
         },
         {
             "atomType": "Input",
@@ -65,11 +69,11 @@
         {
             "atomType": "Code",
             "name": "Code",
-            "x": 0.5349056603773585,
-            "y": 0.7243589743589745,
+            "x": 0.511904761904762,
+            "y": 0.798076923076923,
             "uniqueID": 242339,
             "ioValues": [],
-            "code": "//You can learn more about all of the available methods at https://jsxcad.js.org/app/UserGuide.html \n\n\nfunction main(Input1, Input2){\n  return Arc(5).loft(...seq((t) => (s) => s.scale(t).z(t * 5), { by: 1 / 10 }))        //return must be geometry;\n}\n\nreturn main(Input1, Input2)"
+            "code": "//You can learn more about all of the available methods at https://jsxcad.js.org/app/UserGuide.html \n\n\nfunction main(Input1, Input2){\n  return Arc(9).loft(seq((t) => (s) => s.scale(t).z(t * 5), { by: 1 / 10 }))        //return must be geometry;\n}\n\nreturn main(Input1, Input2)"
         },
         {
             "atomType": "Output",
@@ -88,16 +92,9 @@
     "allConnectors": [
         {
             "ap1Name": "number or geometry",
-            "ap2Name": "teeth",
+            "ap2Name": "dia",
             "ap2Primary": false,
             "ap1ID": 969140,
-            "ap2ID": 133728
-        },
-        {
-            "ap1Name": "number or geometry",
-            "ap2Name": "profile",
-            "ap2Primary": false,
-            "ap1ID": 228960,
             "ap2ID": 133728
         },
         {
@@ -106,10 +103,25 @@
             "ap2Primary": false,
             "ap1ID": 133728,
             "ap2ID": 397062
+        },
+        {
+            "ap1Name": "number or geometry",
+            "ap2Name": "pit",
+            "ap2Primary": false,
+            "ap1ID": 228960,
+            "ap2ID": 133728
+        },
+        {
+            "ap1Name": "number or geometry",
+            "ap2Name": "height",
+            "ap2Primary": false,
+            "ap1ID": 855161,
+            "ap2ID": 133728
         }
     ],
     "fileTypeVersion": 1,
     "simplify": false,
+    "unitsIndex": 0,
     "filetypeVersion": 1,
     "circleSegmentSize": "0.001"
 }
