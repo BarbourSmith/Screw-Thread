@@ -8,15 +8,50 @@
     "topLevel": true,
     "allAtoms": [
         {
+            "atomType": "Code",
+            "name": "Code",
+            "x": 0.31886792452830187,
+            "y": 0.4198717948717949,
+            "uniqueID": 722228,
+            "ioValues": [],
+            "code": "//You can learn more about all of the available methods at https://jsxcad.js.org/app/UserGuide.html \n\n\n\n\nfunction main(Diameter, Height, Pitch){\n  return Profile();        //return must be geometry;\n}\n\nfunction Profile(pitch = 1, angle = 60 / 360){\n  Path(\n    Point(0, 1 / -2),\n    Point(pitch / -2, 1 / 2),\n    Point(pitch / 2, 1 / 2),\n    Point(0, 1 / -2)\n  ).fill();\n}\n\nreturn main(Diameter, Height, Pitch)"
+        },
+        {
+            "atomType": "Circle",
+            "name": "Circle",
+            "x": 0.7537735849056604,
+            "y": 0.6794871794871795,
+            "uniqueID": 470421,
+            "ioValues": [
+                {
+                    "name": "diameter",
+                    "ioValue": 10
+                }
+            ]
+        },
+        {
             "atomType": "Output",
             "name": "Output",
             "x": 0.9867724867724867,
             "y": 0.5,
             "uniqueID": 397062,
-            "ioValues": []
+            "ioValues": [
+                {
+                    "name": "number or geometry",
+                    "ioValue": "atoms/703968/470421Circle"
+                }
+            ]
         }
     ],
-    "allConnectors": [],
+    "allConnectors": [
+        {
+            "ap1Name": "geometry",
+            "ap2Name": "number or geometry",
+            "ap2Primary": false,
+            "ap1ID": 470421,
+            "ap2ID": 397062
+        }
+    ],
     "fileTypeVersion": 1,
     "simplify": false,
     "filetypeVersion": 1,
