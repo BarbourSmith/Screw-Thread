@@ -4,30 +4,72 @@
     "x": 0,
     "y": 0,
     "uniqueID": 703968,
-    "ioValues": [],
+    "ioValues": [
+        {
+            "name": "Diameter",
+            "ioValue": 10
+        },
+        {
+            "name": "Pitch",
+            "ioValue": 10
+        },
+        {
+            "name": "Height",
+            "ioValue": 10
+        }
+    ],
     "topLevel": true,
     "allAtoms": [
         {
-            "atomType": "Code",
-            "name": "Code",
-            "x": 0.31886792452830187,
-            "y": 0.4198717948717949,
-            "uniqueID": 722228,
-            "ioValues": [],
-            "code": "//You can learn more about all of the available methods at https://jsxcad.js.org/app/UserGuide.html \n\n\n\n\nfunction main(Diameter, Height, Pitch){\n  return Profile();        //return must be geometry;\n}\n\nfunction Profile(pitch = 1, angle = 60 / 360){\n  Path(\n    Point(0, 1 / -2),\n    Point(pitch / -2, 1 / 2),\n    Point(pitch / 2, 1 / 2),\n    Point(0, 1 / -2)\n  ).fill();\n}\n\nreturn main(Diameter, Height, Pitch)"
+            "atomType": "Input",
+            "name": "Diameter",
+            "x": 0.013333333333333334,
+            "y": 0.391025641025641,
+            "uniqueID": 969140,
+            "ioValues": []
         },
         {
-            "atomType": "Circle",
-            "name": "Circle",
-            "x": 0.7537735849056604,
-            "y": 0.6794871794871795,
-            "uniqueID": 470421,
+            "atomType": "Input",
+            "name": "Pitch",
+            "x": 0.013333333333333334,
+            "y": 0.532051282051282,
+            "uniqueID": 228960,
+            "ioValues": []
+        },
+        {
+            "atomType": "Code",
+            "name": "Code",
+            "x": 0.3505291005291006,
+            "y": 0.45833333333333337,
+            "uniqueID": 133728,
             "ioValues": [
                 {
-                    "name": "diameter",
+                    "name": "profile",
+                    "ioValue": 10
+                },
+                {
+                    "name": "teeth",
                     "ioValue": 10
                 }
-            ]
+            ],
+            "code": "//Ported to from https://github.com/jsxcad/JSxCAD/blob/92f4cc9dcbb74f4cfbd85d41959a3fda06db7a5c/nb/projects/bolt/bolt.md\n\n//const makePulley = (profile, teeth) => {\n  // Number of teeth, standard Mendel T5 belt = 8, gives Outside Diameter of 11.88mm\n\n\nconst Profile = (pitch = 1, angle = 60 / 360) => {\n  return Path(\n    Point(0, 1 / -2),\n    Point(pitch / -2, 1 / 2),\n    Point(pitch / 2, 1 / 2),\n    Point(0, 1 / -2)\n  ).fill();\n}\n\nconst ScrewThread = ( diameter, height, { pitch = 1, angle, play = 0.1, lefthanded = false } = {}) => {\n\nreturn Profile(pitch, angle).y(diameter / -2 + 1 / 2 + play * 2).ry(1 / 4).loft(seq((t) => {(s) => {s.rz(t).z(pitch * t * 1.001), {from: -1 / 2, by: 1 / 32, to: 3 / 2}}}))\n    //.scale(lefthanded ? 1 : -1, lefthanded ? 1 : -1, 1)\n    //.clip(Box(diameter).ex(pitch))\n    //.z(seq((a) => a, { from: 0, to: height, by: pitch }))\n    //.clip(Box(diameter).ex(height))\n    //.and(Arc(diameter - 2).ex(height));\n}\n\nfunction main(profile, teeth){\n  return ScrewThread(10,10);\n}\n\nreturn main(profile, teeth)"
+        },
+        {
+            "atomType": "Input",
+            "name": "Height",
+            "x": 0.013333333333333334,
+            "y": 0.6666666666666666,
+            "uniqueID": 855161,
+            "ioValues": []
+        },
+        {
+            "atomType": "Code",
+            "name": "Code",
+            "x": 0.5349056603773585,
+            "y": 0.7243589743589745,
+            "uniqueID": 242339,
+            "ioValues": [],
+            "code": "//You can learn more about all of the available methods at https://jsxcad.js.org/app/UserGuide.html \n\n\nfunction main(Input1, Input2){\n  return Arc(5).loft(...seq((t) => (s) => s.scale(t).z(t * 5), { by: 1 / 10 }))        //return must be geometry;\n}\n\nreturn main(Input1, Input2)"
         },
         {
             "atomType": "Output",
@@ -38,17 +80,31 @@
             "ioValues": [
                 {
                     "name": "number or geometry",
-                    "ioValue": "atoms/703968/470421Circle"
+                    "ioValue": "atoms/703968/133728Code"
                 }
             ]
         }
     ],
     "allConnectors": [
         {
+            "ap1Name": "number or geometry",
+            "ap2Name": "teeth",
+            "ap2Primary": false,
+            "ap1ID": 969140,
+            "ap2ID": 133728
+        },
+        {
+            "ap1Name": "number or geometry",
+            "ap2Name": "profile",
+            "ap2Primary": false,
+            "ap1ID": 228960,
+            "ap2ID": 133728
+        },
+        {
             "ap1Name": "geometry",
             "ap2Name": "number or geometry",
             "ap2Primary": false,
-            "ap1ID": 470421,
+            "ap1ID": 133728,
             "ap2ID": 397062
         }
     ],
