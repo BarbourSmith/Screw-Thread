@@ -56,7 +56,7 @@
                     "ioValue": 1
                 }
             ],
-            "code": "//Ported to from https://github.com/jsxcad/JSxCAD/blob/92f4cc9dcbb74f4cfbd85d41959a3fda06db7a5c/nb/projects/bolt/bolt.md\n\nfunction main(dia, height, pit){\n  return ScrewThread(dia, height, {pitch: pit});\n}\n\nconst Profile = (pitch = 1, angle = 60 / 360) => {\n  return Path(\n    Point(0, 0),\n    Point(pitch / -2, 1.33 * pitch),\n    Point(pitch / 2, 1.33 * pitch),\n    Point(0, 0)\n  ).fill();\n}\n\nconst ScrewThread = ( majorDiameter, height, { pitch = 1, angle, play = 0.1, lefthanded = false } = {}) => {\n\nreturn Profile(pitch, angle)\n    .y(majorDiameter / -2 + play * 2 - 0.5 * pitch)\n    .ry(1 / 4)\n    .loft(\n      seq(\n        (t) => (s) => {\n          return s.rz(t).z(pitch * t * 1.001);\n        },\n        {\n          from: -1 / 2,\n          by: 1 / 32,\n          to: 3 / 2,\n        }\n      )\n    )\n    .scale(lefthanded ? 1 : -1, lefthanded ? 1 : -1, 1)\n    .clip(Box(2 * majorDiameter).ex(pitch))\n    .z(seq((a) => a, { from: 0, to: height, by: pitch }))\n    .clip(Box(2 * majorDiameter).ex(height))\n    .and(Arc(majorDiameter - 1.33 * pitch).ex(height))\n    .clip(Arc(majorDiameter).ex(height));\n}\n\n\n\nreturn main(dia, height, pit)"
+            "code": "//Ported to from https://github.com/jsxcad/JSxCAD/blob/92f4cc9dcbb74f4cfbd85d41959a3fda06db7a5c/nb/projects/bolt/bolt.md\n\nfunction main(dia, height, pit){\n  return ScrewThread(dia, height, {pitch: pit});\n}\n\nconst Profile = (pitch = 1, angle = 60 / 360) => {\n  return Path(\n    Point(0, 0),\n    Point(pitch / -2, 1.33 * pitch),\n    Point(pitch / 2, 1.33 * pitch),\n    Point(0, 0)\n  ).fill();\n}\n\nconst ScrewThread = ( majorDiameter, height, { pitch = 1, angle, play = 0.1, lefthanded = true } = {}) => {\n\nreturn Profile(pitch, angle)\n    .y(majorDiameter / -2 + play * 2 - 0.5 * pitch)\n    .ry(1 / 4)\n    .loft(\n      seq(\n        (t) => (s) => {\n          return s.rz(t).z(pitch * t * 1.001);\n        },\n        {\n          from: -1 / 2,\n          by: 1 / 32,\n          to: 3 / 2,\n        }\n      )\n    )\n    .clip(Box(2 * majorDiameter).ex(pitch))\n    .z(seq((a) => a, { from: 0, to: height, by: pitch }))\n    .clip(Box(2 * majorDiameter).ex(height))\n    .and(Arc(majorDiameter - 1.33 * pitch).ex(height))\n    .clip(Arc(majorDiameter).ex(height))\n    .scale(1,1,-1)\n    .z(height);\n}\n\n\n\nreturn main(dia, height, pit)"
         },
         {
             "atomType": "Input",
@@ -73,7 +73,7 @@
             "y": 0.7628205128205128,
             "uniqueID": 486578,
             "ioValues": [],
-            "readmeText": "This is ported from JSxCADÂ https://github.com/jsxcad/JSxCAD/blob/92f4cc9dcbb74f4cfbd85d41959a3fda06db7a5c/nb/projects/bolt/bolt.md"
+            "readmeText": "This is ported from JSxCADÃÂ https://github.com/jsxcad/JSxCAD/blob/92f4cc9dcbb74f4cfbd85d41959a3fda06db7a5c/nb/projects/bolt/bolt.md"
         },
         {
             "atomType": "Output",
@@ -123,5 +123,5 @@
     "simplify": false,
     "unitsIndex": 0,
     "filetypeVersion": 1,
-    "circleSegmentSize": "0.001"
+    "circleSegmentSize": "0.401"
 }
